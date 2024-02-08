@@ -2,24 +2,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/components/my_button.dart';
 import 'package:flutter_application_1/components/my_textfield.dart';
-import 'package:flutter_application_1/components/square_tile.dart';
-import 'package:flutter_application_1/services/auth_service.dart';
+// import 'package:flutter_application_1/components/square_tile.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   final Function()? onTap;
-  const LoginScreen({super.key, required this.onTap});
+  const RegisterScreen({super.key, required this.onTap});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   // text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmpasswordController = TextEditingController();
 
   // sign user in method
-  void signUserIn() async {
+  void signUserUp() async {
     //show loading circle
     showDialog(
       context: context,
@@ -29,12 +29,19 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       },
     );
-    //try sign in
+    //try creating the user
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+      // check if password is confirmed
+      if (passwordController.text == confirmpasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+      } else {
+        // show error message , password dont match
+        ShowErrorMessage('Password tidak sama!');
+      }
+
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       //pop the loading circle
@@ -78,19 +85,9 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 10,
           ),
           const Text(
-            'Selamat Datang!',
+            'Daftar Sekarang',
             style: TextStyle(
                 color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Text(
-            'Masuk Akun Anda',
-            style: TextStyle(
-                color: Colors.black38,
-                fontSize: 15,
-                fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
           MyTextField(
@@ -108,74 +105,23 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(
             height: 10,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Lupa Password ?',
-                  style: TextStyle(color: Colors.grey[600]),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10),
-          MyButton(
-            text: 'Masuk',
-            onTap: signUserIn,
+          MyTextField(
+            controller: confirmpasswordController,
+            hintText: 'Konfirmasi Password Anda',
+            obscureText: true,
           ),
           const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Divider(
-                    thickness: 0.5,
-                    color: Colors.grey[400],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    'Atau masuk menggunakan',
-                    style: TextStyle(color: Colors.grey[700]),
-                  ),
-                ),
-                Expanded(
-                  child: Divider(
-                    thickness: 0.5,
-                    color: Colors.grey[400],
-                  ),
-                ),
-              ],
-            ),
+          MyButton(
+            text: 'Daftar',
+            onTap: signUserUp,
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // google button
-
-              SquareTile(
-                  onTap: () => AuthService().signInWithGoogle(),
-                  imagePath: 'assets/images/icon_google.png'),
-              SizedBox(width: 10),
-              // facebook button
-
-              SquareTile(
-                  onTap: () {}, imagePath: 'assets/images/icon_facebook.png')
-            ],
-          ),
+          const SizedBox(height: 20),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Belum punya akun ?',
+                ' Already have an account?',
                 style: TextStyle(color: Colors.grey[700]),
               ),
               const SizedBox(
@@ -184,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
               GestureDetector(
                   onTap: widget.onTap,
                   child: const Text(
-                    'Daftar',
+                    'Login now',
                     style: TextStyle(
                         color: Colors.blue, fontWeight: FontWeight.bold),
                   )),

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "860641089720",
+    "project_id": "authloginsewa",
+    "storage_bucket": "authloginsewa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860641089720:android:bdb741fcdff7bc94b63c4d",
+        "android_client_info": {
+          "package_name": "com.hobiku.flutter_application_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "860641089720-0b94p65vu1ho8u5h88hb4pv3fnvnqve1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbXQSyXYR8xm7RwJdcKRzn-Nu6vPT4x6Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860641089720-0b94p65vu1ho8u5h88hb4pv3fnvnqve1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
